@@ -53,4 +53,16 @@ return require('packer').startup(function(use)
   use("preservim/nerdcommenter")
   use("nvim-tree/nvim-tree.lua")
   use("nvim-tree/nvim-web-devicons")
+  use("tpope/vim-surround")
+  use("m4xshen/autoclose.nvim")
+  use {
+    'nvimdev/dashboard-nvim',
+    event = 'VimEnter',
+    config = function()
+      require('dashboard').setup {
+        -- config
+      }
+    end,
+    requires = {'nvim-tree/nvim-web-devicons'}
+  }
 end)
