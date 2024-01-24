@@ -65,4 +65,14 @@ return require('packer').startup(function(use)
     end,
     requires = {'nvim-tree/nvim-web-devicons'}
   }
+  use {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  }
+  use('ggandor/leap.nvim')
 end)
