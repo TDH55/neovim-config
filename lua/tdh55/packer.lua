@@ -75,4 +75,6 @@ return require('packer').startup(function(use)
     }
   }
   use('ggandor/leap.nvim')
+  use('smoka7/multicursors.nvim')
+  use('smoka7/hydra.nvim')
 end)
