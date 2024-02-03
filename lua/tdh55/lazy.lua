@@ -187,6 +187,25 @@ require('lazy').setup({
   },
   'smoka7/hydra.nvim',
   {
+    'echasnovski/mini.surround',
+    event = "VeryLazy",
+    config = true,
+    opts = {
+      mappings = {
+        add = '<leader>sa', -- Add surrounding in Normal and Visual modes
+        delete = '<leader>sd', -- Delete surrounding
+        find = '<leader>sf', -- Find surrounding (to the right)
+        find_left = '<leader>sF', -- Find surrounding (to the left)
+        highlight = '<leader>sh', -- Highlight surrounding
+        replace = '<leader>sr', -- Replace surrounding
+        update_n_lines = '<leader>sn', -- Update `n_lines`
+
+        suffix_last = 'l', -- Suffix to search with "prev" method
+        suffix_next = 'n', -- Suffix to search with "next" method
+      },
+    },
+  },
+  {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
     opts = {},
@@ -299,7 +318,10 @@ require('lazy').setup({
           "SmiteshP/nvim-navic",
           "MunifTanjim/nui.nvim"
         },
-        opts = { lsp = { auto_attach = true } }
+        opts = { lsp = { auto_attach = true } },
+        keys = {
+          { '<leader>o', function () require('nvim-navbuddy').open() end, desc = "Open NavBuddy" },
+        }
       }
     },
     -- your lsp config or other stuff
@@ -409,7 +431,8 @@ require('lazy').setup({
   -- lazy.nvim
   {
     "folke/noice.nvim",
-    event = "VeryLazy",
+    enabled = true,
+    -- event = "VeryLazy",
     opts = {
       -- add any options here
     },
@@ -437,7 +460,7 @@ require('lazy').setup({
           command_palette = true, -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
           inc_rename = false, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
+          lsp_doc_border = true, -- add a border to hover docs and signature help
         },
       })
     end
