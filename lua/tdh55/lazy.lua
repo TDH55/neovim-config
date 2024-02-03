@@ -17,12 +17,29 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 --TODO: reoganize
 require('lazy').setup({
+  { 
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000,
+    init = function()
+      vim.cmd('colorscheme catppuccin-mocha')
+    end
+  },
   {
     'rose-pine/neovim',
     name = 'rose-pine',
     config = function()
       vim.cmd('colorscheme rose-pine')
-    end
+    end,
+    init = function()
+      function ColorMyPencils(color)
+        color = color or "rose-pine"
+        vim.cmd.colorscheme(color)
+      end
+
+      ColorMyPencils()
+    end,
+    enabled = false
   },
 
   {
@@ -30,25 +47,68 @@ require('lazy').setup({
     version = "0.1.5", -- TODO: why is this pinned?
     dependencies = {
       'nvim-lua/plenary.nvim'
-    }
+    },
+    config = function()
+      local builtin = require('telescope.builtin')
+      vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
+      vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+      vim.keymap.set('n', '<leader>ps', function()
+        builtin.grep_string({ search = vim.fn.input("Grep > ") });
+      end)
+    end
   },
 
   {
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate'
+    build = ':TSUpdate',
+    dependencies = {
+      "nushell/tree-sitter-nu" 
+    },
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        -- A list of parser names, or "all" (the five listed parsers should always be installed)
+        ensure_installed = { "vue", "yaml", "json", "json5", "html", "javascript", "typescript", "c", "lua", "vim", "vimdoc", "query", "nu" },
+
+        -- Install parsers synchronously (only applied to `ensure_installed`)
+        sync_install = false,
+
+        -- Automatically install missing parsers when entering buffer
+        -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
+        auto_install = true,
+
+        -- List of parsers to ignore installing (or "all")
+
+        ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+        -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+
+        highlight = {
+          enable = true,
+
+          -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+          -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+          -- the name of the parser)
+          -- list of language that will be disabled
+          --
+          -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+
+          -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+          -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+          -- Using this option may slow down your editor, and you may see some duplicate highlights.
+          -- Instead of true it can also be a list of languages
+          additional_vim_regex_highlighting = false,
+        },
+      })
+    end,
   },
 
   'nvim-treesitter/playground',
-  'theprimeagen/harpoon',
-  'mbbill/undotree',
   {
-    'tpope/vim-fugitive',
-    enabled = false,
+    'mbbill/undotree',
     config = function()
-      vim.keymap.set("n", "<leader>gs", vim.cmd.Git);
-    end
+      vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
+    end,
+    event = "VeryLazy"
   },
-  
   -- TODO: look into if this is still the best setup
   {
     'VonHeikemen/lsp-zero.nvim',
@@ -66,22 +126,28 @@ require('lazy').setup({
   'williamboman/mason.nvim',
   'williamboman/mason-lspconfig.nvim',
   'neovim/nvim-lspconfig',
-  'github/copilot.vim',
-  'lvimuser/lsp-inlayhints.nvim',
   {
-    'preservim/nerdcommenter',
-    enabled = false
-  },
-  'nvim-tree/nvim-tree.lua',
-  'nvim-tree/nvim-web-devicons',
-  'tpope/vim-surround',
-  {
-    'm4xshen/autoclose.nvim',
-    enabled = false,
+    'github/copilot.vim',
     config = function()
-      require('autoclose').setup()
+      vim.keymap.set('i', '<C-TAB>', 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false
+      })
+      vim.g.copilot_no_tab_map = true
     end
   },
+  'lvimuser/lsp-inlayhints.nvim',
+  {
+    'nvim-tree/nvim-tree.lua',
+    config = function()
+
+      -- disable netrw at the very start of your init.lua
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+      require('nvim-tree').setup()
+    end
+  },
+  'nvim-tree/nvim-web-devicons',
   {
     'nvimdev/dashboard-nvim',
     event = 'VimEnter',
@@ -93,20 +159,32 @@ require('lazy').setup({
     }
   },
   {
-    'folke/todo-comments.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim'
-    }
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+    event = "VeryLazy",
   },
-
   {
-    'ggandor/leap.nvim',
-    enabled = false,
-    config = function()
-      require('leap').create_default_mappings()
-    end
+    "smoka7/multicursors.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      'smoka7/hydra.nvim',
+    },
+    opts = {},
+    cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
+    keys = {
+      {
+        mode = { 'v', 'n' },
+        '<Leader>m',
+        '<cmd>MCstart<cr>',
+        desc = 'Create a selection for selected text or word under the cursor',
+      },
+    },
   },
-  'smoka7/multicursors.nvim',
   'smoka7/hydra.nvim',
   {
     "echasnovski/mini.pairs",
@@ -184,7 +262,7 @@ require('lazy').setup({
   },
   {
     "echasnovski/mini.indentscope",
-    version = false, -- wait till new 0.7.0 release to put it back on semver
+    -- version = false, -- wait till new 0.7.0 release to put it back on semver
     event = "VeryLazy",
     opts = {
       -- symbol = "▏",
@@ -236,7 +314,8 @@ require('lazy').setup({
       "nvim-telescope/telescope.nvim", -- optional
       "ibhagwan/fzf-lua",              -- optional
     },
-    config = true
+    config = true,
+    event = "VeryLazy",
   },
   {
     "folke/which-key.nvim",
@@ -250,6 +329,118 @@ require('lazy').setup({
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
     }
+  },
+  {
+    "folke/trouble.nvim",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
+  {
+    "nvim-pack/nvim-spectre",
+    build = false,
+    cmd = "Spectre",
+    opts = { open_cmd = "noswapfile vnew" },
+    -- stylua: ignore
+    keys = {
+      { "<leader>sr", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
+    },
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    event = "VeryLazy",
+    opts = { },
+    config = true
+  },
+  {
+    "akinsho/bufferline.nvim",
+    event = "VeryLazy",
+    keys = {
+      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+      { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
+      { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
+      { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
+      { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
+      { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+      { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+      { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
+      { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+    },
+    opts = {
+      options = {
+        -- stylua: ignore
+        close_command = function(n) require("mini.bufremove").delete(n, false) end,
+        -- stylua: ignore
+        right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
+        diagnostics = "nvim_lsp",
+        always_show_bufferline = false,
+        diagnostics_indicator = function(_, _, diag)
+          local icons = require("lazyvim.config").icons.diagnostics
+          local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+          .. (diag.warning and icons.Warn .. diag.warning or "")
+          return vim.trim(ret)
+        end,
+        offsets = {
+          {
+            filetype = "neo-tree",
+            text = "Neo-tree",
+            highlight = "Directory",
+            text_align = "left",
+          },
+        },
+      },
+    },
+    config = function(_, opts)
+      require("bufferline").setup(opts)
+      -- Fix bufferline when restoring a session
+      vim.api.nvim_create_autocmd("BufAdd", {
+        callback = function()
+          vim.schedule(function()
+            pcall(nvim_bufferline)
+          end)
+        end,
+      })
+    end,
+    enabled = false
+  },
+  -- lazy.nvim
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+    },
+    config = function()
+      require("noice").setup({
+        lsp = {
+          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+          },
+        },
+        -- you can enable a preset for easier configuration
+        presets = {
+          bottom_search = true, -- use a classic bottom cmdline for search
+          command_palette = true, -- position the cmdline and popupmenu together
+          long_message_to_split = true, -- long messages will be sent to a split
+          inc_rename = false, -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false, -- add a border to hover docs and signature help
+        },
+      })
+    end
   }
 })
 
