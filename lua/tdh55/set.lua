@@ -26,3 +26,5 @@ vim.opt.colorcolumn = "140"
 vim.opt.formatoptions:remove({'o'})
 
 vim.g.mapleader = " "
+
+

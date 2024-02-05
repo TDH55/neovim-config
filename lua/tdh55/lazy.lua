@@ -341,6 +341,7 @@ require('lazy').setup({
   },
   {
     "folke/which-key.nvim",
+    enabled = true,
     event = "VeryLazy",
     init = function()
       vim.o.timeout = true
@@ -368,7 +369,7 @@ require('lazy').setup({
     opts = { open_cmd = "noswapfile vnew" },
     -- stylua: ignore
     keys = {
-      { "<leader>sr", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
+      { "<leader>ss", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
     },
   },
   {
@@ -463,6 +464,55 @@ require('lazy').setup({
           lsp_doc_border = true, -- add a border to hover docs and signature help
         },
       })
+    end
+  },
+  {
+    'stevearc/conform.nvim',
+    opts = {},
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          -- Use a sub-list to run only the first available formatter
+          javascript = { { "biome", "prettierd", "prettier" } },
+          typescript = { { "biome" } },
+        },
+
+        format_on_save = {
+          -- These options will be passed to conform.format()
+          timeout_ms = 500,
+          lsp_fallback = true,
+        },
+      })
+    end,
+  },
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = { 
+      'kevinhwang91/promise-async' 
+    },
+    config = function()
+      vim.o.foldcolumn = '1' -- '0' is not bad
+      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+
+      -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
+      vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+      vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.foldingRange = {
+        dynamicRegistration = false,
+        lineFoldingOnly = true
+      }
+      local language_servers = require("lspconfig").util.available_servers() -- or list servers manually like {'gopls', 'clangd'}
+      for _, ls in ipairs(language_servers) do
+        require('lspconfig')[ls].setup({
+          capabilities = capabilities
+          -- you can add other fields for setting up lsp server in this table
+        })
+      end
+      require('ufo').setup()
     end
   }
 })
