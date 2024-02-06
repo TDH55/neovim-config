@@ -1,5 +1,5 @@
- --TODO: file to replace packer.lua
- --NOTE: bootstrapping lazy.nvim
+--TODO: file to replace packer.lua
+--NOTE: bootstrapping lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -17,7 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 --TODO: reoganize
 require('lazy').setup({
-  { 
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
@@ -62,7 +62,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     dependencies = {
-      "nushell/tree-sitter-nu" 
+      "nushell/tree-sitter-nu"
     },
     config = function()
       require('nvim-treesitter.configs').setup({
@@ -140,11 +140,11 @@ require('lazy').setup({
   {
     'nvim-tree/nvim-tree.lua',
     config = function()
-
       -- disable netrw at the very start of your init.lua
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
       require('nvim-tree').setup()
+      vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>')
     end
   },
   'nvim-tree/nvim-web-devicons',
@@ -192,16 +192,16 @@ require('lazy').setup({
     config = true,
     opts = {
       mappings = {
-        add = '<leader>sa', -- Add surrounding in Normal and Visual modes
-        delete = '<leader>sd', -- Delete surrounding
-        find = '<leader>sf', -- Find surrounding (to the right)
-        find_left = '<leader>sF', -- Find surrounding (to the left)
-        highlight = '<leader>sh', -- Highlight surrounding
-        replace = '<leader>sr', -- Replace surrounding
+        add = '<leader>sa',            -- Add surrounding in Normal and Visual modes
+        delete = '<leader>sd',         -- Delete surrounding
+        find = '<leader>sf',           -- Find surrounding (to the right)
+        find_left = '<leader>sF',      -- Find surrounding (to the left)
+        highlight = '<leader>sh',      -- Highlight surrounding
+        replace = '<leader>sr',        -- Replace surrounding
         update_n_lines = '<leader>sn', -- Update `n_lines`
 
-        suffix_last = 'l', -- Suffix to search with "prev" method
-        suffix_next = 'n', -- Suffix to search with "next" method
+        suffix_last = 'l',             -- Suffix to search with "prev" method
+        suffix_next = 'n',             -- Suffix to search with "next" method
       },
     },
   },
@@ -240,11 +240,11 @@ require('lazy').setup({
     opts = {},
     -- stylua: ignore
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
+      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
+      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   },
   {
@@ -320,7 +320,7 @@ require('lazy').setup({
         },
         opts = { lsp = { auto_attach = true } },
         keys = {
-          { '<leader>o', function () require('nvim-navbuddy').open() end, desc = "Open NavBuddy" },
+          { '<leader>o', function() require('nvim-navbuddy').open() end, desc = "Open NavBuddy" },
         }
       }
     },
@@ -329,8 +329,8 @@ require('lazy').setup({
   {
     "NeogitOrg/neogit",
     dependencies = {
-      "nvim-lua/plenary.nvim",         -- required
-      "sindrets/diffview.nvim",        -- optional - Diff integration
+      "nvim-lua/plenary.nvim",  -- required
+      "sindrets/diffview.nvim", -- optional - Diff integration
 
       -- Only one of these is needed, not both.
       "nvim-telescope/telescope.nvim", -- optional
@@ -375,22 +375,22 @@ require('lazy').setup({
   {
     "lewis6991/gitsigns.nvim",
     event = "VeryLazy",
-    opts = { },
+    opts = {},
     config = true
   },
   {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     keys = {
-      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
+      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle pin" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
-      { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete other buffers" },
-      { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete buffers to the right" },
-      { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete buffers to the left" },
-      { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-      { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
-      { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev buffer" },
-      { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+      { "<leader>bo", "<Cmd>BufferLineCloseOthers<CR>",          desc = "Delete other buffers" },
+      { "<leader>br", "<Cmd>BufferLineCloseRight<CR>",           desc = "Delete buffers to the right" },
+      { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>",            desc = "Delete buffers to the left" },
+      { "<S-h>",      "<cmd>BufferLineCyclePrev<cr>",            desc = "Prev buffer" },
+      { "<S-l>",      "<cmd>BufferLineCycleNext<cr>",            desc = "Next buffer" },
+      { "[b",         "<cmd>BufferLineCyclePrev<cr>",            desc = "Prev buffer" },
+      { "]b",         "<cmd>BufferLineCycleNext<cr>",            desc = "Next buffer" },
     },
     opts = {
       options = {
@@ -403,7 +403,7 @@ require('lazy').setup({
         diagnostics_indicator = function(_, _, diag)
           local icons = require("lazyvim.config").icons.diagnostics
           local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-          .. (diag.warning and icons.Warn .. diag.warning or "")
+              .. (diag.warning and icons.Warn .. diag.warning or "")
           return vim.trim(ret)
         end,
         offsets = {
@@ -457,11 +457,11 @@ require('lazy').setup({
         },
         -- you can enable a preset for easier configuration
         presets = {
-          bottom_search = true, -- use a classic bottom cmdline for search
-          command_palette = true, -- position the cmdline and popupmenu together
+          bottom_search = true,         -- use a classic bottom cmdline for search
+          command_palette = true,       -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = false, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = true, -- add a border to hover docs and signature help
+          inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = true,        -- add a border to hover docs and signature help
         },
       })
     end
@@ -487,12 +487,12 @@ require('lazy').setup({
   },
   {
     'kevinhwang91/nvim-ufo',
-    dependencies = { 
-      'kevinhwang91/promise-async' 
+    dependencies = {
+      'kevinhwang91/promise-async'
     },
     config = function()
       vim.o.foldcolumn = '1' -- '0' is not bad
-      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
       vim.o.foldlevelstart = 99
       vim.o.foldenable = true
 
@@ -516,4 +516,3 @@ require('lazy').setup({
     end
   }
 })
-
