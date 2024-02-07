@@ -52,6 +52,12 @@ require('lazy').setup({
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
       vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+      vim.keymap.set('n', '<leader>fb', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
+      vim.keymap.set('n', '<leader>fa', '<cmd>Telescope live_grep<CR>')
+      vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})
+      vim.keymap.set('n', '<leader>fs', builtin.lsp_document_symbols, {})
+      vim.keymap.set('n', '<leader>fp', builtin.diagnostics, {})
+      vim.keymap.set('n', '<leader>fc', builtin.commands, {})
       vim.keymap.set('n', '<leader>ps', function()
         builtin.grep_string({ search = vim.fn.input("Grep > ") });
       end)
@@ -514,5 +520,15 @@ require('lazy').setup({
       end
       require('ufo').setup()
     end
+  },
+  {
+    'sindrets/diffview.nvim',
+    event = "VeryLazy",
+    config = function()
+      require('diffview').setup()
+      vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<cr>')
+      vim.keymap.set('n', '<leader>gdc', '<cmd>DiffviewClose<cr>')
+    end
+    -- TODO: add key bindings - <leader>gd to open diff veiw
   }
 })
