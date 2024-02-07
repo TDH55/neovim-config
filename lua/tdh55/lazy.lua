@@ -145,6 +145,7 @@ require('lazy').setup({
   'lvimuser/lsp-inlayhints.nvim',
   {
     'nvim-tree/nvim-tree.lua',
+    enabled = true,
     config = function()
       -- disable netrw at the very start of your init.lua
       vim.g.loaded_netrw = 1
@@ -152,6 +153,14 @@ require('lazy').setup({
       require('nvim-tree').setup()
       vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>')
     end
+  },
+  {
+    'stevearc/oil.nvim',
+    enabled = false,
+    opts = {},
+    config = true,
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
   'nvim-tree/nvim-web-devicons',
   {
@@ -469,6 +478,16 @@ require('lazy').setup({
           inc_rename = false,           -- enables an input dialog for inc-rename.nvim
           lsp_doc_border = true,        -- add a border to hover docs and signature help
         },
+        routes = {
+          {
+            filter = {
+              event = "msg_show",
+              -- kind = "",
+              -- find = "written",
+            },
+            opts = { skip = true },
+          },
+        }
       })
     end
   },
