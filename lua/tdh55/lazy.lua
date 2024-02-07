@@ -156,9 +156,12 @@ require('lazy').setup({
   },
   {
     'stevearc/oil.nvim',
-    enabled = false,
+    enabled = true,
     opts = {},
-    config = true,
+    config = function()
+      require('oil').setup()
+      vim.keymap.set('n', '<leader>to', '<cmd>Oil --float ./<cr>')
+    end,
     -- Optional dependencies
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
