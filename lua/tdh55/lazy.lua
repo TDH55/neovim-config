@@ -18,12 +18,22 @@ vim.g.mapleader = " "
 --TODO: reoganize
 require('lazy').setup({
   {
+    "folke/tokyonight.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    init = function()
+      vim.cmd('colorscheme tokyonight-night')
+    end,
+  },
+  {
     "catppuccin/nvim",
     name = "catppuccin",
     priority = 1000,
     init = function()
       vim.cmd('colorscheme catppuccin-mocha')
-    end
+    end,
+    enabled = false
   },
   {
     'rose-pine/neovim',
@@ -41,7 +51,10 @@ require('lazy').setup({
     end,
     enabled = false
   },
-
+  {
+    'norcalli/nvim-colorizer.lua',
+    config = true
+  },
   {
     'nvim-telescope/telescope.nvim',
     version = "0.1.5", -- TODO: why is this pinned?
@@ -548,7 +561,7 @@ require('lazy').setup({
     event = "VeryLazy",
     config = function()
       require('diffview').setup()
-      vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<cr>')
+      vim.keymap.set('n', '<leader>gdo', '<cmd>DiffviewOpen<cr>')
       vim.keymap.set('n', '<leader>gdc', '<cmd>DiffviewClose<cr>')
     end
     -- TODO: add key bindings - <leader>gd to open diff veiw
