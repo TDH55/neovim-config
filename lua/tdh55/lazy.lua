@@ -36,22 +36,6 @@ require('lazy').setup({
     enabled = false
   },
   {
-    'rose-pine/neovim',
-    name = 'rose-pine',
-    config = function()
-      vim.cmd('colorscheme rose-pine')
-    end,
-    init = function()
-      function ColorMyPencils(color)
-        color = color or "rose-pine"
-        vim.cmd.colorscheme(color)
-      end
-
-      ColorMyPencils()
-    end,
-    enabled = false
-  },
-  {
     'norcalli/nvim-colorizer.lua',
     config = true
   },
