@@ -483,9 +483,9 @@ require('lazy').setup({
             filter = {
               event = "msg_show",
               -- kind = "",
-              -- find = "written",
+              find = "written",
             },
-            opts = { skip = true },
+            opts = { skip = false },
           },
         }
       })
@@ -549,5 +549,29 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>gdc', '<cmd>DiffviewClose<cr>')
     end
     -- TODO: add key bindings - <leader>gd to open diff veiw
+  },
+  {
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("chatgpt").setup({
+        api_key_cmd = "op read op://private/OpenAI/credential --no-newline",
+      })
+    end,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "folke/trouble.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
+  },
+  {
+    'winston0410/range-highlight.nvim',
+    dependencies = {
+      'winston0410/cmd-parser.nvim'
+    },
+    config = function()
+      require('range-highlight').setup({})
+    end
   }
 })
