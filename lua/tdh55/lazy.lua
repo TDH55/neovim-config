@@ -18,6 +18,7 @@ vim.g.mapleader = " "
 --TODO: reoganize
 require('lazy').setup({
   {
+    -- THEME
     "folke/tokyonight.nvim",
     lazy = false,
     priority = 1000,
@@ -27,19 +28,12 @@ require('lazy').setup({
     end,
   },
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    init = function()
-      vim.cmd('colorscheme catppuccin-mocha')
-    end,
-    enabled = false
-  },
-  {
+    -- This plugin highlights colors in the code (such as css colors) when activated (:ColorizerToggle)
     'norcalli/nvim-colorizer.lua',
     config = true
   },
   {
+    -- This plugin is used for fuzzy searching
     'nvim-telescope/telescope.nvim',
     version = "0.1.5", -- TODO: why is this pinned?
     dependencies = {
@@ -47,21 +41,23 @@ require('lazy').setup({
     },
     config = function()
       local builtin = require('telescope.builtin')
-      vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
-      vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-      vim.keymap.set('n', '<leader>fb', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-      vim.keymap.set('n', '<leader>fa', '<cmd>Telescope live_grep<CR>')
-      vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})
-      vim.keymap.set('n', '<leader>fs', builtin.lsp_document_symbols, {})
-      vim.keymap.set('n', '<leader>fp', builtin.diagnostics, {})
-      vim.keymap.set('n', '<leader>fc', builtin.commands, {})
-      vim.keymap.set('n', '<leader>ps', function()
-        builtin.grep_string({ search = vim.fn.input("Grep > ") });
-      end)
+      vim.keymap.set('n', '<leader>pf', builtin.find_files, {})                         -- <leader>pf to search all files
+      vim.keymap.set('n', '<C-p>', builtin.git_files, {})                               -- <Ctrl-p> to search git files
+      vim.keymap.set('n', '<leader>fb', '<cmd>Telescope current_buffer_fuzzy_find<CR>') -- <leader>fb to search in current buffer (similar to <Cmd-f>)
+      vim.keymap.set('n', '<leader>fa', '<cmd>Telescope live_grep<CR>')                 -- <leader>fa to search in all files (similar to <Cmd-Shift-f>)
+      vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})                     -- <leader>fr When the cursor is on a symbol, search the references of the symbol
+      vim.keymap.set('n', '<leader>fs', builtin.lsp_document_symbols, {})               -- <leader>fs to search for the highlighted symbol in the current document
+      vim.keymap.set('n', '<leader>fp', builtin.diagnostics, {})                        -- <leader>fp to search for diagnostics (e.g. errors, warnings, etc.)
+      vim.keymap.set('n', '<leader>fc', builtin.commands, {})                           -- <leader>fc to search for vim commands
+      vim.keymap.set('n', '<leader>ps',
+        function()                                                                      -- <leader>ps also similar to <Cmd-Shift-f>
+          builtin.grep_string({ search = vim.fn.input("Grep > ") });
+        end)
     end
   },
 
   {
+    -- This plugin is used for syntax highlighting. Use :TSInstall to install new parsers (e.g. <:TSInstall typescript> to get typescript syntax highlighting)
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     dependencies = {
@@ -103,9 +99,9 @@ require('lazy').setup({
       })
     end,
   },
-
-  'nvim-treesitter/playground',
+  'nvim-treesitter/playground', -- This can be used to visulize how Treesitter does it's highlighting, not really useful for development but can be interesting
   {
+    -- This plugin provides a visual tree of undos and redos. Can be opened with <leader>u and used to manage undos and redos
     'mbbill/undotree',
     config = function()
       vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
@@ -114,6 +110,7 @@ require('lazy').setup({
   },
   -- TODO: look into if this is still the best setup
   {
+    -- This plugin manages lsp stuff (e.g. autocompletion, diagnostics, etc.). I haven't looked into other setups but it seems to work very well and is popular and supported
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
     dependencies = {
@@ -125,11 +122,12 @@ require('lazy').setup({
       'L3MON4D3/LuaSnip',
     }
   },
-
+  -- These are used to manage LSPs, use the command <:Mason> to get a ui where lsp's can be installed and uninstalled
   'williamboman/mason.nvim',
   'williamboman/mason-lspconfig.nvim',
   'neovim/nvim-lspconfig',
   {
+    -- Github Copilot, currently setup to use <Ctrl-TAB> to accept the suggestion (tab works if no lsp suggestions are presented)
     'github/copilot.vim',
     config = function()
       vim.keymap.set('i', '<C-TAB>', 'copilot#Accept("\\<CR>")', {
@@ -139,8 +137,10 @@ require('lazy').setup({
       vim.g.copilot_no_tab_map = true
     end
   },
+  -- inlay hints from the lsp
   'lvimuser/lsp-inlayhints.nvim',
   {
+    -- A file tree plugin. The tree can be toggled with <leader>nt
     'nvim-tree/nvim-tree.lua',
     enabled = true,
     config = function()
@@ -148,22 +148,24 @@ require('lazy').setup({
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
       require('nvim-tree').setup()
-      vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>')
+      vim.keymap.set('n', '<leader>nt', ':NvimTreeToggle<CR>') -- <leader>nt to toggle the file tree
     end
   },
   {
+    -- Another file management plugin. This is presented on launch and can be used to open files, rename, delete, etc. It allows managing files as a buffer so names can be changed and files can be deleted as you would manage any other text
     'stevearc/oil.nvim',
     enabled = true,
     opts = {},
     config = function()
       require('oil').setup()
-      vim.keymap.set('n', '<leader>to', '<cmd>Oil --float ./<cr>')
+      vim.keymap.set('n', '<leader>to', '<cmd>Oil --float ./<cr>') -- <leader>to to open oil
     end,
     -- Optional dependencies
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
-  'nvim-tree/nvim-web-devicons',
+  'nvim-tree/nvim-web-devicons', -- icons for the file tree
   {
+    -- A dashboard if nvim is opened without any file/path arguments
     'nvimdev/dashboard-nvim',
     event = 'VimEnter',
     config = function()
@@ -174,6 +176,18 @@ require('lazy').setup({
     }
   },
   {
+    -- highlights comments such as todos, fixmes, etc.
+    -- eg.:
+    -- TODO: this is a todo
+    -- FIXME: this is a fixme
+    -- FIX: this is a fix
+    -- BUG: this is a bug
+    -- HACK: this is a hack
+    -- NOTE: this is a note
+    -- PERF: this is a perf
+    -- OPTIMIZE: this is an optimize
+    -- WARN:: this is a warn
+    -- WARNING: this is a warning
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {
@@ -184,6 +198,7 @@ require('lazy').setup({
     event = "VeryLazy",
   },
   {
+    -- a plugin to allow multiple cursors, use <leader>m to start selecting multiple cursors
     "smoka7/multicursors.nvim",
     event = "VeryLazy",
     dependencies = {
@@ -202,6 +217,8 @@ require('lazy').setup({
   },
   'smoka7/hydra.nvim',
   {
+    -- a plugin for easy manipulation of surrounding characters (e.g. quotes, brackets, etc.)
+    -- example: use <leader>sr'" to replace the surrounding singgle quotes with double quotes
     'echasnovski/mini.surround',
     event = "VeryLazy",
     config = true,
@@ -221,6 +238,7 @@ require('lazy').setup({
     },
   },
   {
+    -- A plugin to autoclose pairs of characters (e.g. quotes, brackets, etc.)
     "echasnovski/mini.pairs",
     event = "VeryLazy",
     opts = {},
@@ -241,6 +259,7 @@ require('lazy').setup({
     },
   },
   {
+    -- a plugin for easy commenting. Currently mapped to gcc to comment a line and gc to comment a visual selection
     "echasnovski/mini.comment",
     event = "VeryLazy",
     version = "*",
@@ -249,6 +268,9 @@ require('lazy').setup({
     end,
   },
   {
+    -- This provices some nice new motions for navigating text.
+    -- E.g. s<char> will then create shortcuts after each instance fo the character that can be typed to jump to that location. Multiple characters can be typed to narrow down the search
+    -- Also provides some enhancements to the f, F, t, and T motions (read more in the doccumentation for the plugin on github)
     "folke/flash.nvim",
     event = "VeryLazy",
     ---@type Flash.Config
@@ -263,11 +285,13 @@ require('lazy').setup({
     },
   },
   {
+    -- This plugin handles the status bar at the bottom (where the git status, filename, etc. is displayed)
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {}
   },
   {
+    -- indent lines
     "lukas-reineke/indent-blankline.nvim",
     event = "VeryLazy",
     opts = {
@@ -295,6 +319,7 @@ require('lazy').setup({
     main = "ibl",
   },
   {
+    -- also indent line related
     "echasnovski/mini.indentscope",
     -- version = false, -- wait till new 0.7.0 release to put it back on semver
     event = "VeryLazy",
@@ -324,7 +349,9 @@ require('lazy').setup({
       })
     end,
   },
-  { -- TODO: add nvim-navic as well?
+  {
+    -- This needs to be cleaned up but it's a plugin that allows you to search through symbols (e.g. functions, variables, etc.) in a file
+    -- mapped to <leader>o
     "neovim/nvim-lspconfig",
     dependencies = {
       {
@@ -342,6 +369,8 @@ require('lazy').setup({
     -- your lsp config or other stuff
   },
   {
+    -- Git integration. Open with <:Neogit> and then you can manage branches, commits, etc.
+    -- Allows you to stage and unstage changes, commit, push, pull, etc.
     "NeogitOrg/neogit",
     dependencies = {
       "nvim-lua/plenary.nvim",  -- required
@@ -355,6 +384,8 @@ require('lazy').setup({
     event = "VeryLazy",
   },
   {
+    -- This gives some helpful hints of possible keybindings that can be used after typing a partial command
+    -- ex. type <leader> and then it will show possible next keys and what they do (if they trigger an action they will show the action, if they are followed by more keys they will show an arrow and then possible bindings once typed)
     "folke/which-key.nvim",
     enabled = true,
     event = "VeryLazy",
@@ -369,6 +400,7 @@ require('lazy').setup({
     }
   },
   {
+    -- Can be used to show a list of lsp diagnostics.
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
@@ -378,6 +410,7 @@ require('lazy').setup({
     },
   },
   {
+    -- Another way to search all files but this supports search and replace. Use <leader>ss to open the search and replace
     "nvim-pack/nvim-spectre",
     build = false,
     cmd = "Spectre",
@@ -388,12 +421,14 @@ require('lazy').setup({
     },
   },
   {
+    -- Adds git status to teh gutter, also has other features such as line blame that can be configured or activated with a command such as <:Gitsigns toggle_current_line_blame>
     "lewis6991/gitsigns.nvim",
     event = "VeryLazy",
     opts = {},
     config = true
   },
   {
+    -- Can be configured to have tabs like a gui editor. Currently not enabled
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
     keys = {
@@ -446,6 +481,8 @@ require('lazy').setup({
   },
   -- lazy.nvim
   {
+    -- Some ui enhancements such as moving the command line to look like the vscode command prompt, borders on lsp diagnostics, etc.
+    -- Also has some graphical improvments on notifications
     "folke/noice.nvim",
     enabled = true,
     -- event = "VeryLazy",
@@ -492,6 +529,7 @@ require('lazy').setup({
     end
   },
   {
+    -- Used for formatting and linting. Currently setup to use biome but can also be configured for eslint, prettier, etc.
     'stevearc/conform.nvim',
     opts = {},
     config = function()
@@ -511,6 +549,8 @@ require('lazy').setup({
     end,
   },
   {
+    -- Makes folding code easier. Use  zc to close a function unbder the cursor, zo to open a function under the cursor
+    -- type z to see more options (presented by the which key plugin)
     'kevinhwang91/nvim-ufo',
     dependencies = {
       'kevinhwang91/promise-async'
@@ -541,6 +581,7 @@ require('lazy').setup({
     end
   },
   {
+    -- Can be used to view a diff without leaving vim. open a diff with <leader>gdo and close with <leader>gdc
     'sindrets/diffview.nvim',
     event = "VeryLazy",
     config = function()
@@ -548,9 +589,10 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>gdo', '<cmd>DiffviewOpen<cr>')
       vim.keymap.set('n', '<leader>gdc', '<cmd>DiffviewClose<cr>')
     end
-    -- TODO: add key bindings - <leader>gd to open diff veiw
   },
   {
+    -- a plugin to access chat gpt in neovim, it uses an api key and can be configured to use different models and have different gpt related settings
+    -- open with <:ChatGPT>
     "jackMort/ChatGPT.nvim",
     event = "VeryLazy",
     config = function()
@@ -564,14 +606,5 @@ require('lazy').setup({
       "folke/trouble.nvim",
       "nvim-telescope/telescope.nvim"
     }
-  },
-  {
-    'winston0410/range-highlight.nvim',
-    dependencies = {
-      'winston0410/cmd-parser.nvim'
-    },
-    config = function()
-      require('range-highlight').setup({})
-    end
   }
 })

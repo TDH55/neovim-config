@@ -29,6 +29,22 @@ require('mason-lspconfig').setup({
 local lspconfig = require('lspconfig')
 lspconfig.biome.setup({})
 
+lspconfig.rust_analyzer.setup({
+  -- on_attach = function(client, bufnr)
+  --   ih.on_attach(client, bufnr)
+  -- end,
+  settings = {
+    ["rust-analyzer"] = {
+      inlayHints = {
+        typeHints = true,
+        parameterHints = true,
+        chainingHints = true,
+        maxLength = 100,
+      }
+    }
+  }
+})
+
 lspconfig.tsserver.setup({
   settings = {
     typescript = {
