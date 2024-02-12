@@ -606,5 +606,12 @@ require('lazy').setup({
       "folke/trouble.nvim",
       "nvim-telescope/telescope.nvim"
     }
+  },
+  {
+    -- a plugin for working with markdown
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
   }
 })
