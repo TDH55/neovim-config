@@ -9,7 +9,8 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
-vim.opt.rpt:prepend(lazypath)
+vim.opt.rtp:prepend(lazypath)
+vim.g.mapleader = " "
 
 require('lazy').setup({
   spec = "tdh55.lazy",
