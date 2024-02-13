@@ -4,6 +4,7 @@ return {
   build = false,
   cmd = "Spectre",
   opts = { open_cmd = "noswapfile vnew" },
+  depends = { 'nvim-lua/plenary.nvim' },
   -- stylua: ignore
   keys = {
     { "<leader>ss", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },

@@ -1,1 +1,1 @@
-require("tdh55")
+require("config")

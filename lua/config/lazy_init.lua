@@ -13,6 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 
 require('lazy').setup({
-  spec = "tdh55.lazy",
+  spec = "config.lazy",
   change_detection = { notify = false }
 })
