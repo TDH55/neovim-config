@@ -1,7 +1,6 @@
 return {
   -- This plugin is used for fuzzy searching
   'nvim-telescope/telescope.nvim',
-  version = "0.1.5", -- TODO: why is this pinned?
   dependencies = {
     'nvim-lua/plenary.nvim'
   },
