@@ -16,11 +16,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  pattern = "*.wgsl",
+  callback = function()
+    vim.bo.filetype = "wgsl"
+  end,
+})
+
 lsp.preset("recommended")
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = { 'tsserver', 'rust_analyzer' },
+  ensure_installed = { 'tsserver' },
   handlers = {
     lsp.default_setup,
   },
@@ -29,21 +36,7 @@ require('mason-lspconfig').setup({
 local lspconfig = require('lspconfig')
 lspconfig.biome.setup({})
 
-lspconfig.rust_analyzer.setup({
-  -- on_attach = function(client, bufnr)
-  --   ih.on_attach(client, bufnr)
-  -- end,
-  settings = {
-    ["rust-analyzer"] = {
-      inlayHints = {
-        typeHints = true,
-        parameterHints = true,
-        chainingHints = true,
-        maxLength = 100,
-      }
-    }
-  }
-})
+lspconfig.wgsl_analyzer.setup({})
 
 lspconfig.tsserver.setup({
   settings = {
@@ -151,6 +144,30 @@ require('lspconfig').tsserver.setup({
     }
   }
 })
+
+
+vim.g.rustaceanvim = {
+  -- Plugin configuration
+  tools = {
+  },
+  -- LSP configuration
+  server = {
+    on_attach = function(client, bufnr)
+      -- you can also put keymaps in here
+    end,
+    default_settings = {
+      -- rust-analyzer language server configuration
+      ['rust-analyzer'] = {
+        cargo = {
+          target = "wasm32-unknown-unknown"
+        }
+      },
+    },
+  },
+  -- DAP configuration
+  dap = {
+  },
+}
 
 lsp.setup()
 
