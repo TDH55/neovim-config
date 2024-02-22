@@ -37,6 +37,7 @@ local lspconfig = require('lspconfig')
 lspconfig.biome.setup({})
 
 lspconfig.wgsl_analyzer.setup({})
+lspconfig.volar.setup({})
 
 lspconfig.tsserver.setup({
   settings = {
