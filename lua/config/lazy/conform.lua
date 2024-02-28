@@ -1,5 +1,6 @@
 return {
   -- Used for formatting and linting. Currently setup to use biome but can also be configured for eslint, prettier, etc.
+  enabled = true,
   'stevearc/conform.nvim',
   opts = {},
   config = function()

@@ -2,7 +2,7 @@ return {
   -- Github Copilot, currently setup to use <Ctrl-TAB> to accept the suggestion (tab works if no lsp suggestions are presented)
   'github/copilot.vim',
   config = function()
-    vim.keymap.set('i', '<C-TAB>', 'copilot#Accept("\\<CR>")', {
+    vim.keymap.set('i', '<C-Tab>', 'copilot#Accept("\\<CR>")', {
       expr = true,
       replace_keycodes = false
     })
