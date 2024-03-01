@@ -38,6 +38,21 @@ lspconfig.biome.setup({})
 
 lspconfig.wgsl_analyzer.setup({})
 lspconfig.volar.setup({})
+lspconfig.gopls.setup({
+  settings = {
+    gopls = {
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+    },
+  }
+})
 
 lspconfig.tsserver.setup({
   settings = {
