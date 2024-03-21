@@ -6,8 +6,8 @@ return {
   },
   config = function()
     local builtin = require('telescope.builtin')
-    vim.keymap.set('n', '<leader>pf', builtin.find_files, {})                         -- <leader>pf to search all files
-    vim.keymap.set('n', '<leader>ff', builtin.git_files, {})                         -- <leader>pf to search all files
+    vim.keymap.set('n', '<leader>pf', builtin.git_files, {})                         -- <leader>pf to search all files
+    vim.keymap.set('n', '<leader>ff', builtin.find_files, {})                         -- <leader>pf to search all files
     -- vim.keymap.set('n', '<C-p>', builtin.git_files, {})                               -- <Ctrl-p> to search git files
     vim.keymap.set('n', '<leader>fb', '<cmd>Telescope current_buffer_fuzzy_find<CR>') -- <leader>fb to search in current buffer (similar to <Cmd-f>)
     vim.keymap.set('n', '<leader>fa', '<cmd>Telescope live_grep<CR>')                 -- <leader>fa to search in all files (similar to <Cmd-Shift-f>)
