@@ -7,9 +7,14 @@ return {
       "nushell/tree-sitter-nu"
     },
     config = function()
+      vim.filetype.add({
+        extension = {
+          hurl = "hurl"
+        }
+      })
       require('nvim-treesitter.configs').setup({
         -- A list of parser names, or "all" (the five listed parsers should always be installed)
-        ensure_installed = { "vue", "yaml", "json", "json5", "html", "javascript", "typescript", "c", "lua", "vim", "vimdoc", "query", "nu" },
+        ensure_installed = { "vue", "yaml", "json", "json5", "html", "javascript", "typescript", "c", "lua", "vim", "vimdoc", "query", "nu", "hurl" },
 
         -- Install parsers synchronously (only applied to `ensure_installed`)
         sync_install = false,
