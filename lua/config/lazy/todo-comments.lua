@@ -19,4 +19,8 @@ return {
     -- refer to the configuration section below
   },
   event = "VeryLazy",
+  config = function ()
+    local todo = require("todo-comments")
+    todo.setup({})
+  end
 }
