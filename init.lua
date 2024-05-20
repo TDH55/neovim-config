@@ -102,7 +102,7 @@ vim.g.have_nerd_font = false
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -159,7 +159,21 @@ vim.opt.scrolloff = 10
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
+
+-- TODO: move keymaps to a separate file
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- NOTE: keymaps for switching between and resizing splits
+vim.keymap.set('n', '<leader><leader>j', '<C-w>j')
+vim.keymap.set('n', '<leader><leader>k', '<C-w>k')
+vim.keymap.set('n', '<leader><leader>h', '<C-w>h')
+vim.keymap.set('n', '<leader><leader>l', '<C-w>l')
+
+-- TODO: find a binding for this
+-- vim.keymap.set('n', 'M-,', '<C-w>5<')
+-- vim.keymap.set('n', 'M-.', '<C-w>5>')
+-- vim.keymap.set('n', 'M-t', '<C-w>+')
+-- vim.keymap.set('n', 'M-s', '<C-w>->')
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -191,12 +205,11 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- keymap for copy/paste
-vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
+vim.keymap.set('n', '<leader>Y', [["+Y]])
 
-vim.keymap.set({ "n", "v" }, "<leader>pp", [["+p]])
-vim.keymap.set("n", "<leader>P", [["+P]])
-
+vim.keymap.set({ 'n', 'v' }, '<leader>pp', [["+p]])
+vim.keymap.set('n', '<leader>P', [["+P]])
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -248,7 +261,6 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   -- { 'numToStr/Comment.nvim',  opts = {} },
 
-
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -264,7 +276,7 @@ require('lazy').setup({
   -- after the plugin has been loaded:
   --  config = function() ... end
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
@@ -294,7 +306,6 @@ require('lazy').setup({
   --
   -- Use the `dependencies` key to specify the dependencies of a particular plugin
 
-
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -305,11 +316,11 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim',       opts = {} },
+      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       -- Brief aside: **What is LSP?**
@@ -512,7 +523,6 @@ require('lazy').setup({
     end,
   },
 
-
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
@@ -580,7 +590,7 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<Tab>'] = cmp.mapping.confirm { select = true },
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
